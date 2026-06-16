@@ -105,22 +105,27 @@ btn = st.button("Process Files", type="primary")
 
 folderPath = [save_upload(_) for _ in folderPath]
 
-if btn:
-    if len(folderPath) > 0:
-        if not chkbox:
-            with st.spinner("Processing", show_time=True) as spinner:
-                tmp_path, outputfileName = concatFiles(folderPath, chkbox)
+if len(folderPath)>0:
+    btn = st.button("Process Files", type="primary")
 
-        elif chkbox:
-            with st.spinner("Processing", show_time=True) as spinner:
-                tmp_path, outputfileName = concatFiles(folderPath, chkbox) 
-        
-        filename = os.path.basename(outputfileName).rsplit(".", maxsplit=1)[0]
-        outputfileName  = filename[:10]+"_merged.xlsx"
+    folderPath = [save_upload(_) for _ in folderPath]
 
-        with open(tmp_path, "rb") as f:
-            st.download_button("Download Files", f,  file_name=outputfileName,)
+    if btn:
+        if len(folderPath) > 0:
+            if not chkbox:
+                with st.spinner("Processing", show_time=True) as spinner:
+                    tmp_path, outputfileName = concatFiles(folderPath, chkbox)
 
-        os.unlink(tmp_path) 
-    else:
-        raiseError()
+            elif chkbox:
+                with st.spinner("Processing", show_time=True) as spinner:
+                    tmp_path, outputfileName = concatFiles(folderPath, chkbox) 
+            
+            filename = os.path.basename(outputfileName).rsplit(".", maxsplit=1)[0]
+            outputfileName  = filename[:10]+"_merged.xlsx"
+
+            with open(tmp_path, "rb") as f:
+                st.download_button("Download Files", f,  file_name=outputfileName,)
+
+            os.unlink(tmp_path) 
+        else:
+            raiseError()
