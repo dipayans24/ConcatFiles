@@ -16,6 +16,7 @@ def save_upload(uploaded_file):
     return tmp_path
 
 def custom_function(df):
+    df = df.drop_duplicates(subset = df.columns, how = "all)
     #df = df[df["Amount"] <= 945]
     # df = df[~(df["Tags"].astype(str).str.contains("l1")) | (df["Tags"].astype(str).isna())]
     # df["Phone Number"] = df["Phone Number"].astype(str).str.replace(r"\D", "", regex=True)
