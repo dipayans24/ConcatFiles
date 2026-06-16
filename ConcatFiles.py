@@ -37,6 +37,7 @@ def concatFiles(folderPath, separateSheets):
 
     file_paths = [f for f in folderPath  if f.endswith(".xlsx")]
 
+    fileName =files+file_paths
     tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx")
     tmp.close()
 
@@ -44,22 +45,21 @@ def concatFiles(folderPath, separateSheets):
 
     data = pd.DataFrame()
     if len(files) > 0:
-        for file in folderPath:
-            if file.endswith(".csv"):
-                files.append(file)
-                df = pd.read_csv(file , low_memory=False)
-                FileName = extractValidText(os.path.basename(file).split(".")[0])
+        for file in files:
+            
+            df = pd.read_csv(file , low_memory=False)
+            FileName = extractValidText(os.path.basename(file).split(".")[0])
 
-                if not separateSheets:
-                    df["FileName"] = FileName
-                    data = pd.concat([data, df], axis="rows")
-                else:
-                    sheet_name = extractValidText(FileName)
-                    try:
-                        df = custom_function(df)
-                        df.to_excel(writer, index=False, sheet_name=sheet_name)
-                    except Exception as e:
-                        df.to_excel(writer, index=False)
+            if not separateSheets:
+                df["FileName"] = FileName
+                data = pd.concat([data, df], axis="rows")
+            else:
+                sheet_name = extractValidText(FileName)
+                try:
+                    df = custom_function(df)
+                    df.to_excel(writer, index=False, sheet_name=sheet_name)
+                except Exception as e:
+                    df.to_excel(writer, index=False)
                 
         if not separateSheets:
             data = custom_function(data)
@@ -86,7 +86,7 @@ def concatFiles(folderPath, separateSheets):
 
     writer.close()
 
-    return tmp.name, files[0]
+    return tmp.name, fileName[0]
 
       
 @st.dialog("Error!!")
