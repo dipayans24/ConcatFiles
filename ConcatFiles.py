@@ -100,11 +100,6 @@ col1, col2 = st.columns(2, width="stretch")
 folderPath = st.file_uploader("Upload Files.", type=["csv", "xlsx"], accept_multiple_files=True)  
 
 chkbox = st.checkbox("Create seperate sheets, instead of merging.")
-btn = st.button("Process Files", type="primary")
-
-
-folderPath = [save_upload(_) for _ in folderPath]
-
 if len(folderPath)>0:
     btn = st.button("Process Files", type="primary")
 
