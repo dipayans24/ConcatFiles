@@ -94,7 +94,9 @@ def concatFiles(folderPath, separateSheets):
 def raiseError():
     st.text("Incorrect Folder Path.")
 
-st.header("Files Merger for CSV and Excel.")
+st.set_page_config("🧩 Files Merger", layout="wide")
+st.header("🧩 Files Merger for CSV and Excel", divider=True, text_alignment="center")
+
 
 col1, col2 = st.columns(2, width="stretch")
 
