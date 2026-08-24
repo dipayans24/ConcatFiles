@@ -125,7 +125,7 @@ if len(folderPath)>0:
             outputfileName  = filename[:10]+"_merged.xlsx"
 
             with open(tmp_path, "rb") as f:
-                st.download_button("Download Files", f,  file_name=outputfileName,)
+                st.download_button("Download Files", f,  file_name=outputfileName, on_click = "ignore")
 
             os.unlink(tmp_path) 
         else:
