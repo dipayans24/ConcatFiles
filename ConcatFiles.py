@@ -75,7 +75,10 @@ def concatFiles(folderPath, separateSheets):
                     all_dfs.update({sheet:xf.parse(sheet)})  # reuses the open file handle
 
         if not separateSheets:
-            df = pd.concat(all_dfs, axis=0, ignore_index=True)
+            df = pd.DataFrame()
+            for sheet_name, data_ in all_dfs.items():
+                df["File_"] = sheet_name
+                df = pd.concat([df, data_], axis=0, ignore_index=True)
             df = custom_function(df)
 
             data = pd.concat([data, df], axis=0, ignore_index=True)
