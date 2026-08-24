@@ -77,7 +77,7 @@ def concatFiles(folderPath, separateSheets):
         if not separateSheets:
             df = pd.DataFrame()
             for sheet_name, data_ in all_dfs.items():
-                df["File_"] = sheet_name
+                data_["File_"] = sheet_name
                 df = pd.concat([df, data_], axis=0, ignore_index=True)
             df = custom_function(df)
 
