@@ -12,10 +12,11 @@ FUNC_NAME = "custom_function"
 # and "return df" footer are fixed and hidden, and get spliced back in
 # whenever the code is compiled — see build_function_source().
 DEFAULT_BODY = '''df.drop_duplicates(subset=df.columns, inplace=True)
-# df = df[~(df["Tags"].astype(str).str.contains("l1")) | (df["Tags"].astype(str).isna())]
-# df["Phone Number"] = df["Phone Number"].astype(str).str.replace(r"\\D", "", regex=True)
-# df["CreatedAt"] = pd.to_datetime(df["CreatedAt"], format="%Y-%m-%d %H:%M:%S", exact=True, dayfirst=True, yearfirst=False)
-# df.sort_values(by="CreatedAt", ascending=False, inplace=True, ignore_index=True)'''
+#df = df[~(df["Tags"].astype(str).str.contains("l1")) | (df["Tags"].astype(str).isna())]
+#df = df[df["Status"] == "captured"]
+#df["Phone Number"] = df["Phone Number"].astype(str).str.replace(r"\\D", "", regex=True)
+#df["CreatedAt"] = pd.to_datetime(df["CreatedAt"], format="%Y-%m-%d %H:%M:%S", exact=True, dayfirst=True, yearfirst=False)
+#df.sort_values(by="CreatedAt", ascending=False, inplace=True, ignore_index=True)'''
 
 
 def build_function_source(body: str) -> str:
@@ -202,6 +203,13 @@ def run_pipeline(separateSheets):
     st.session_state.processing_active = False
 
 
+def files_signature(files):
+    """A fingerprint of the current uploader contents. Includes Streamlit's
+    internal file_id (not just name/size) so that re-uploading a file with the
+    same name still counts as a change."""
+    return tuple(sorted((f.name, f.size, getattr(f, "file_id", None)) for f in (files or [])))
+
+
 # ── UI ──────────────────────────────────────────────────────────
 st.set_page_config("🧩 Files Merger", layout="wide")
 st.header("🧩 Files Merger for CSV and Excel", divider=True, text_alignment="center")
@@ -217,6 +225,7 @@ for key, default in [
     ("output_path", None),
     ("output_ext", "xlsx"),
     ("output_source_name", None),
+    ("last_upload_signature", None),
 ]:
     if key not in st.session_state:
         st.session_state[key] = default
@@ -224,6 +233,21 @@ for key, default in [
 col1, col2 = st.columns(2, width="stretch")
 
 folderPath = st.file_uploader("Upload Files.", type=["csv", "xlsx"], accept_multiple_files=True)
+
+# If the uploaded fileset has changed since the last processed run (new file,
+# removed file, or a same-name re-upload), the old output/download is stale —
+# clear it so we don't keep showing results for files that are no longer here.
+current_signature = files_signature(folderPath)
+if current_signature != st.session_state.last_upload_signature:
+    st.session_state.units = None
+    st.session_state.skip_names = set()
+    st.session_state.skip_all_code = False
+    st.session_state.pending_error = None
+    st.session_state.processing_active = False
+    st.session_state.output_path = None
+    st.session_state.output_ext = "xlsx"
+    st.session_state.output_source_name = None
+    st.session_state.last_upload_signature = current_signature
 
 chkbox = st.checkbox("Create seperate sheets, instead of merging.")
 
