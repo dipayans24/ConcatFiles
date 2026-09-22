@@ -16,6 +16,15 @@ DEFAULT_BODY = '''df.drop_duplicates(subset=df.columns, inplace=True)
 #df = df[df["Status"] == "captured"]
 #df["Phone Number"] = df["Phone Number"].astype(str).str.replace(r"\\D", "", regex=True)
 #df["CreatedAt"] = pd.to_datetime(df["CreatedAt"], format="%Y-%m-%d %H:%M:%S", exact=True, dayfirst=True, yearfirst=False)
+#df = df[df["Is Claimed"] ==False]
+
+#------BDA Part Cleaning------
+#BDA = df
+#BDA["createdAt"] = pd.to_datetime(BDA["createdAt"], format = "%d/%m/%Y %H:%M", exact=True, dayfirst=True, yearfirst=False)
+#BDA["updatedAt"] = pd.to_datetime(BDA["updatedAt"],format = "%d/%m/%Y %H:%M", exact=True, dayfirst=True, yearfirst=False)
+#BDA["date_time_of_closing"] = pd.to_datetime(BDA["date_time_of_closing"], format = "%d/%m/%Y %H:%M", exact=True, dayfirst=True, yearfirst=False)
+#df = BDA
+
 #df.sort_values(by="CreatedAt", ascending=False, inplace=True, ignore_index=True)'''
 
 
