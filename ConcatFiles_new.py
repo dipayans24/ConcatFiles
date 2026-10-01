@@ -16,6 +16,7 @@ DEFAULT_BODY = '''df.drop_duplicates(subset=df.columns, inplace=True)
 #df = df[df["Status"] == "captured"]
 #df["Phone Number"] = df["Phone Number"].astype(str).str.replace(r"\\D", "", regex=True)
 #df["CreatedAt"] = pd.to_datetime(df["CreatedAt"], format="%Y-%m-%d %H:%M:%S", exact=True, dayfirst=True, yearfirst=False)
+#df = df[~df["Source"].str.contains("divinelane", case = False)]
 #df = df[df["Is Claimed"] ==False]
 
 #------BDA Part Cleaning------
