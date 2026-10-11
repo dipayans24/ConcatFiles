@@ -4,7 +4,7 @@ import tempfile
 import streamlit as st
 import pandas as pd, os
 
-_INVALID_CHARS = re.compile(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]')
+_INVALID_CHARS = re.compile(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]') 
 
 FUNC_NAME = "custom_function"
 
